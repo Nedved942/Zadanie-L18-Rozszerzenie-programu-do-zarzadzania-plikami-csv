@@ -1,7 +1,8 @@
 Obecne zadanie
 *** Rozszerzenie programu do zarządzania plikami csv ***
 
-Napisz program oparty na klasach i dziedziczeniu, który odczyta wejściowy plik, następnie zmodyfikuje go i wyświetli w terminalu jego zawartość, a na końcu zapisze w wybranej lokalizacji.
+Napisz program oparty na klasach i dziedziczeniu, który odczyta wejściowy plik, następnie zmodyfikuje go i wyświetli
+w terminalu jego zawartość, a na końcu zapisze w wybranej lokalizacji.
 
 Uruchomienie programu przez terminal:
 python reader.py <plik_wejsciowy> <plik_wyjsciowy> <zmiana_1> <zmiana_2> ... <zmiana_n>
@@ -24,7 +25,6 @@ Wymagane formaty:
 .csv
 .json
 .txt
-.pickle
 
 
 Zadanie z lekcji 12

@@ -1,7 +1,41 @@
 from sys import argv
 import csv
+from json import dump, load
 
-print("\n*** Program do zarządzania plikami csv ***\n")
+print("\n*** Rozszerzenie programu do zarządzania plikami csv ***\n")
+
+
+class ConsoleArgumentsAmountException(Exception):
+    def __str__(self):
+        return "Too few arguments give to console."
+
+
+class Type:
+    def __init__(self):
+        self.input_file = argv[1]
+        self.output_file = argv[2]
+        self.changes_list = argv[3:]
+
+class JSON(Type):
+    pass
+
+
+class CSV(Type):
+    pass
+
+
+class TXT(Type):
+    pass
+
+
+# try:
+#     pass
+# except IndentationError:
+#     print("Błąd - Niewłaściwa ilość podanych argumentów.")
+#     exit()
+# except :
+#     pass
+
 
 # # Przykładowe wartości
 # input_file, output_file, changes_list = "in.csv", "out.csv", ["0,0,gitara", "3,1,kubek", "1,2,17", "3,3,0"]

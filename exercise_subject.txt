@@ -8,7 +8,7 @@ Uruchomienie programu przez terminal:
 python reader.py <plik_wejsciowy> <plik_wyjsciowy> <zmiana_1> <zmiana_2> ... <zmiana_n>
 
  <plik_wejsciowy> - nazwa pliku, który ma zostać odczytany, np. in.csv, in.json lub in.txt
- <plik_wyjsciowy> - nazwa pliku, do którego ma zostać zapisana zawartość, np. out.csv, out.json, out.txt lub out.pickle
+ <plik_wyjsciowy> - nazwa pliku, do którego ma zostać zapisana zawartość, np. out.csv, out.json, out.txt
  <zmiana_x> - Zmiana w postaci "x,y,wartosc" - x (kolumna) oraz y (wiersz) są współrzędnymi liczonymi od 0, natomiast "wartosc" zmianą która ma trafić na podane miejsce.
 
 Przykładowy plik wejściowy znajduje się w repozytorium pod nazwą "in.json”.

@@ -22,17 +22,53 @@ class Type:
     def file_write(self):
         pass
 
+    def set_changes(self):
+        pass
+
 
 class JSON(Type):
-    pass
+    def file_read(self):
+        pass
+
+    def file_write(self):
+        pass
+
+    def set_changes(self):
+        pass
 
 
 class CSV(Type):
-    pass
+    def file_read(self):
+        with open(self.input_file) as file_stream:
+            rows_list = []
+            object_csv_file = csv.reader(file_stream)
+            for row in object_csv_file:
+                rows_list.append(row)
+        return rows_list
+
+    def file_write(self):
+        pass
+
+    def set_changes(self):
+        pass
 
 
 class TXT(Type):
-    pass
+    def file_read(self):
+        with open(self.input_file) as file_stream:
+            rows_list = []
+            object_txt_file = file_stream.readline()
+            while object_txt_file:
+                object_txt_file = object_txt_file.removesuffix("\n")
+                object_txt_file = object_txt_file.split(",")
+                rows_list.append(object_txt_file)
+                object_txt_file = file_stream.readline()
+
+    def file_write(self):
+        pass
+
+    def set_changes(self):
+        pass
 
 
 # # Przykładowe wartości
@@ -42,17 +78,37 @@ if len(argv) < 3:
     print("Błąd - Zbyt mała liczba podanych argumentów.")
     exit()
 
+# TODO Powyżej 3 czy 4 ?
+
 try:
-    file = Type(argv[1], argv[2], argv[3:])
+    if ".txt" in argv[1]:
+        print("To jest txt.")
+        file = TXT(argv[1], argv[2], argv[3:])
+    elif ".json" in argv[1]:
+        print("To jest json.")
+        file = JSON(argv[1], argv[2], argv[3:])
+    elif ".csv" in argv[1]:
+        print("To jest csv.")
+        file = CSV(argv[1], argv[2], argv[3:])
+    else:
+        print("Błąd - Niepoprawny format pliku.")
+        exit()
 except IndentationError:
     print("Błąd - Niewłaściwa ilość podanych argumentów.")
     exit()
 
-    # print(file.input_file, file.output_file, file.changes_list)
 
-# rows_list_from_csv = []
+print(file.file_read())
+
+
+
+
+
+
+
+# rows_list = []
 # changes_list_mod = []
-#
+
 # for change in changes_list:
 #     changes_list_mod.append(change.split(","))
 #
@@ -60,7 +116,7 @@ except IndentationError:
 #     with open(input_file) as file:
 #         object_csv_file = csv.reader(file)
 #         for row in object_csv_file:
-#             rows_list_from_csv.append(row)
+#             rows_list.append(row)
 # except FileNotFoundError:
 #     print("Błąd - niepoprawna ścieżka. Podaj właściwą ścieżkę do pliku wejściowego.")
 #     exit()
@@ -75,7 +131,7 @@ except IndentationError:
 #         if row < 0 or column < 0:
 #             print("Błąd - współrzędna ujemna. Podaj współrzędną równą lub większą od zera.")
 #             exit()
-#         rows_list_from_csv[column][row] = name
+#         rows_list[column][row] = name
 # except ValueError:
 #     print("Błąd - niewłaściwa wartość. Podaj właściwą wartość dla docelowych zmian. "
 #           "Zmiany mają być w podane formacie \"x,y,z\" "
@@ -90,7 +146,7 @@ except IndentationError:
 # with open(output_file, "w", newline="") as file:
 #     # file.write(rows_list_from_csv)
 #     write = csv.writer(file, delimiter=",")  # Utworzenie obiektu pliku csv
-#     for row in rows_list_from_csv:
+#     for row in rows_list:
 #         write.writerow(row)
 #
 # print("Polecenie zostało wykonane pomyślnie.")

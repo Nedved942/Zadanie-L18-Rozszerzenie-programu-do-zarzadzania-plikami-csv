@@ -22,18 +22,29 @@ class Type:
     def file_write(self):
         pass
 
-    def set_changes(self):
-        pass
+    def set_changes(self, list_to_mod):
+        changes_list_mod = []
+        for change in self.changes_list:
+            changes_list_mod.append(change.split(","))
+
+        for changes in changes_list_mod:
+            row, column, name = changes
+            row = int(row)
+            column = int(column)
+            if row < 0 or column < 0:
+                print("Błąd - współrzędna ujemna. Podaj współrzędną równą lub większą od zera.")
+                exit()
+            list_to_mod[column][row] = name
+        return list_to_mod
 
 
 class JSON(Type):
     def file_read(self):
-        pass
+        with open(self.input_file) as file_stream:
+            rows_list = load(file_stream)
+        return rows_list
 
     def file_write(self):
-        pass
-
-    def set_changes(self):
         pass
 
 
@@ -49,9 +60,6 @@ class CSV(Type):
     def file_write(self):
         pass
 
-    def set_changes(self):
-        pass
-
 
 class TXT(Type):
     def file_read(self):
@@ -63,11 +71,9 @@ class TXT(Type):
                 object_txt_file = object_txt_file.split(",")
                 rows_list.append(object_txt_file)
                 object_txt_file = file_stream.readline()
+            return rows_list
 
     def file_write(self):
-        pass
-
-    def set_changes(self):
         pass
 
 
@@ -97,49 +103,23 @@ except IndentationError:
     print("Błąd - Niewłaściwa ilość podanych argumentów.")
     exit()
 
+try:
+    file.file_read()
+except FileNotFoundError:
+    print("Błąd - niepoprawna ścieżka. Podaj właściwą ścieżkę do pliku wejściowego.")
+    exit()
 
-print(file.file_read())
+try:
+    print(file.set_changes(file.file_read()))
+except ValueError:
+    print("Błąd - niewłaściwa wartość. Podaj właściwą wartość dla docelowych zmian. "
+          "Zmiany mają być w podane formacie \"x,y,z\" "
+          "(1. współrzędna, 2. współrzędna, nazwa)")
+    exit()
+except IndexError:
+    print("Błąd - zbyt duża wartość współrzędnej. Podaj właściwą wartość współrzędnych.")
+    exit()
 
-
-
-
-
-
-
-# rows_list = []
-# changes_list_mod = []
-
-# for change in changes_list:
-#     changes_list_mod.append(change.split(","))
-#
-# try:
-#     with open(input_file) as file:
-#         object_csv_file = csv.reader(file)
-#         for row in object_csv_file:
-#             rows_list.append(row)
-# except FileNotFoundError:
-#     print("Błąd - niepoprawna ścieżka. Podaj właściwą ścieżkę do pliku wejściowego.")
-#     exit()
-#
-# # print(rows_list_from_csv)
-#
-# try:
-#     for changes in changes_list_mod:
-#         row, column, name = changes
-#         row = int(row)
-#         column = int(column)
-#         if row < 0 or column < 0:
-#             print("Błąd - współrzędna ujemna. Podaj współrzędną równą lub większą od zera.")
-#             exit()
-#         rows_list[column][row] = name
-# except ValueError:
-#     print("Błąd - niewłaściwa wartość. Podaj właściwą wartość dla docelowych zmian. "
-#           "Zmiany mają być w podane formacie \"x,y,z\" "
-#           "(1. współrzędna, 2. współrzędna, nazwa)")
-#     exit()
-# except IndexError:
-#     print("Błąd - zbyt duża wartość współrzędnej. Podaj właściwą wartość współrzędnych.")
-#     exit()
 #
 # # print(rows_list_from_csv)
 #

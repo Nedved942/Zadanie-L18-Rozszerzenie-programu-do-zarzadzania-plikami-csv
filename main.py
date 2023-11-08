@@ -5,16 +5,6 @@ from json import dump, load
 print("\n*** Rozszerzenie programu do zarządzania plikami csv ***\n")
 
 
-# class ConsoleArgumentsAmountException(Exception):
-#     def __str__(self):
-#         return "Too few arguments give to console."
-
-#
-# class MyError(Exception):
-#     def __str__(self):
-#         return "Too few arguments give to console."
-
-
 class Type:
     def __init__(self, input_file, output_file, changes_list):
         self.input_file = input_file
@@ -85,38 +75,35 @@ class TXT(Type):
             return rows_list
 
 
-# # Przykładowe wartości
-# input_file, output_file, changes_list = "in.csv", "out.csv", ["0,0,gitara", "3,1,kubek", "1,2,17", "3,3,0"]
-
-print(argv)
+# print(argv)
 
 if len(argv) < 3:
     print("Błąd - Zbyt mała liczba podanych argumentów.")
     exit()
 
-# TODO Powyżej 3 czy 4 ?
-
 try:
     if ".txt" in argv[1]:
-        print("To jest txt.")
         file = TXT(argv[1], argv[2], argv[3:])
     elif ".json" in argv[1]:
-        print("To jest json.")
         file = JSON(argv[1], argv[2], argv[3:])
     elif ".csv" in argv[1]:
-        print("To jest csv.")
         file = CSV(argv[1], argv[2], argv[3:])
     else:
-        print("Błąd - Niepoprawny format pliku.")
+        print("Błąd - Niepoprawny format pliku wejściowego.")
         exit()
 except IndentationError:
     print("Błąd - Niewłaściwa ilość podanych argumentów.")
     exit()
 
+if ".txt" not in argv[2] and ".json" not in argv[2] and ".csv" not in argv[2]:
+    print("Błąd - Niespodziewany format pliku wyjściowego.")
+    exit()
+
 
 try:
     changed_file = file.set_changes(file.file_read())
-    print(changed_file)
+    file.file_write(changed_file)
+    # print(changed_file)
 except ValueError:
     print("Błąd - niewłaściwa wartość. Podaj właściwą wartość dla docelowych zmian. "
           "Zmiany mają być w podane formacie \"x,y,z\" "
@@ -129,6 +116,5 @@ except FileNotFoundError:
     print("Błąd - niepoprawna ścieżka. Podaj właściwą ścieżkę do pliku wejściowego.")
     exit()
 
-file.file_write(changed_file)
 
 print("Polecenie zostało wykonane pomyślnie.")

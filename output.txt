@@ -1,4 +1,4 @@
 drzwi,3,7,0
 kanapka,12,5,1
-pedzel,bulka,smileeee,5
+pedzel,hueh,smile,5
 plakat,czerwony,8,kij

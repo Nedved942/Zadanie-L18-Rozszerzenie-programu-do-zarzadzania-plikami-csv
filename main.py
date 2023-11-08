@@ -9,6 +9,11 @@ print("\n*** Rozszerzenie programu do zarządzania plikami csv ***\n")
 #     def __str__(self):
 #         return "Too few arguments give to console."
 
+#
+# class MyError(Exception):
+#     def __str__(self):
+#         return "Too few arguments give to console."
+
 
 class Type:
     def __init__(self, input_file, output_file, changes_list):
@@ -19,8 +24,20 @@ class Type:
     def file_read(self):
         pass
 
-    def file_write(self):
-        pass
+    def file_write(self, changed_file):
+        if ".txt" in self.output_file or ".csv" in self.output_file:
+            file_to_convert = []
+            for element in changed_file:
+                file_to_convert.append(",".join(element))
+
+            with open(self.output_file, "w") as file_stream:
+                for element in file_to_convert:
+                    file_stream.write(element)
+                    file_stream.write("\n")
+
+        elif ".json" in self.output_file:
+            with open(self.output_file, "w") as file_stream:
+                dump(changed_file, file_stream)
 
     def set_changes(self, list_to_mod):
         changes_list_mod = []
@@ -44,9 +61,6 @@ class JSON(Type):
             rows_list = load(file_stream)
         return rows_list
 
-    def file_write(self):
-        pass
-
 
 class CSV(Type):
     def file_read(self):
@@ -56,9 +70,6 @@ class CSV(Type):
             for row in object_csv_file:
                 rows_list.append(row)
         return rows_list
-
-    def file_write(self):
-        pass
 
 
 class TXT(Type):
@@ -73,12 +84,11 @@ class TXT(Type):
                 object_txt_file = file_stream.readline()
             return rows_list
 
-    def file_write(self):
-        pass
-
 
 # # Przykładowe wartości
 # input_file, output_file, changes_list = "in.csv", "out.csv", ["0,0,gitara", "3,1,kubek", "1,2,17", "3,3,0"]
+
+print(argv)
 
 if len(argv) < 3:
     print("Błąd - Zbyt mała liczba podanych argumentów.")
@@ -103,14 +113,10 @@ except IndentationError:
     print("Błąd - Niewłaściwa ilość podanych argumentów.")
     exit()
 
-try:
-    file.file_read()
-except FileNotFoundError:
-    print("Błąd - niepoprawna ścieżka. Podaj właściwą ścieżkę do pliku wejściowego.")
-    exit()
 
 try:
-    print(file.set_changes(file.file_read()))
+    changed_file = file.set_changes(file.file_read())
+    print(changed_file)
 except ValueError:
     print("Błąd - niewłaściwa wartość. Podaj właściwą wartość dla docelowych zmian. "
           "Zmiany mają być w podane formacie \"x,y,z\" "
@@ -119,14 +125,10 @@ except ValueError:
 except IndexError:
     print("Błąd - zbyt duża wartość współrzędnej. Podaj właściwą wartość współrzędnych.")
     exit()
+except FileNotFoundError:
+    print("Błąd - niepoprawna ścieżka. Podaj właściwą ścieżkę do pliku wejściowego.")
+    exit()
 
-#
-# # print(rows_list_from_csv)
-#
-# with open(output_file, "w", newline="") as file:
-#     # file.write(rows_list_from_csv)
-#     write = csv.writer(file, delimiter=",")  # Utworzenie obiektu pliku csv
-#     for row in rows_list:
-#         write.writerow(row)
-#
-# print("Polecenie zostało wykonane pomyślnie.")
+file.file_write(changed_file)
+
+print("Polecenie zostało wykonane pomyślnie.")
